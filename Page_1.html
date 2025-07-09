@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Local's Guide to Copenhagen by Rasmus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .neighborhood-btn.active {
+            background-color: #FF4E50;
+            color: white;
+            transform: scale(1.05);
+        }
+        .neighborhood-content {
+            display: none;
+        }
+        .neighborhood-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-bold text-gray-800">Copenhagen: A Local's Guide</div>
+                <div class="hidden md:flex space-x-4">
+                    <a href="#rasmus-take" class="text-gray-600 hover:text-[#FF4E50]">Rasmus's Take</a>
+                    <a href="#neighborhoods" class="text-gray-600 hover:text-[#FF4E50]">Neighborhoods</a>
+                    <a href="#activities" class="text-gray-600 hover:text-[#FF4E50]">Activities</a>
+                    <a href="#classics" class="text-gray-600 hover:text-[#FF4E50]">The Classics</a>
+                    <a href="#avoid" class="text-gray-600 hover:text-[#FF4E50]">Local Tips</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="rasmus-take" class="text-center mb-16 section-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#FF4E50] mb-4">Discover Copenhagen Through a Local's Eyes</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Welcome! I've put together some personal favorites and tips to help you experience the real Copenhagen. Let's explore the city beyond the typical tourist trails.</p>
+            <div class="bg-white rounded-lg shadow-xl p-8 max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold mb-4">What I Like: Rasmus's Perfect Copenhagen Vibe</h2>
+                <p class="text-gray-700 mb-4">
+                    Personally, I love a good mix of relaxation, sightseeing, and simply wandering the streets and look at people and architecture . The perfect day for me involves finding a great cup of coffee, enjoying delicious food, do some sports activities, relax at the beach for some hours and taking long walks to soak in the atmosphere. Copenhagen is amazing for this blend of activity and leisure.
+                </p>
+                <p class="text-gray-700">
+                    When it comes to swimming, the city has so many incredible harbor baths. My personal favorites are **Amager Strand**, **La Banchina**, and **Islands Brygge**, but you'll find great spots all over the city.
+                    I would try to go to either prologcoffee or la carbra to try some of their coffe, courses or events**see their web page**.  
+                    Try the canal tour it is nice and gives a good overview of the city.
+                    do not buy food at Nyhavn it is okay but a litlle bit expensive compared to the quality. There are also plenty of outdoor activities around the city kajak, subpadel and maybe you are a ready for a danish sauna gus.
+
+                </p>
+            </div>
+        </section>
+
+        <section id="neighborhoods" class="mb-16 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-8">Copenhagen's Neighborhoods: Find Your Vibe</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Each district in Copenhagen has its own unique personality. From the hip and edgy to the elegant and green, here's a breakdown of what makes each area special. Click on a neighborhood to learn more.</p>
+
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                <button onclick="showNeighborhood('vesterbro')" class="neighborhood-btn active text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Vesterbro</button>
+                <button onclick="showNeighborhood('norrebro')" class="neighborhood-btn text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Nørrebro</button>
+                <button onclick="showNeighborhood('indreby')" class="neighborhood-btn text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Indre By</button>
+                <button onclick="showNeighborhood('osterbro')" class="neighborhood-btn text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Østerbro</button>
+                <button onclick="showNeighborhood('christianshavn')" class="neighborhood-btn text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Christianshavn</button>
+                <button onclick="showNeighborhood('amager')" class="neighborhood-btn text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Amager</button>
+                <button onclick="showNeighborhood('nordhavn')" class="neighborhood-btn text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Nordhavn</button>
+                <button onclick="showNeighborhood('frederiksberg')" class="neighborhood-btn text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Frederiksberg</button>
+                <button onclick="showNeighborhood('nordvest')" class="neighborhood-btn text-sm md:text-base bg-white shadow-md rounded-full px-4 py-2 transition-all duration-300 hover:bg-[#FF4E50] hover:text-white">Nordvest</button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+                <div id="vesterbro-content" class="neighborhood-content active">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Vesterbro: Cool, Raw & Creative</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> Young, hip, and edgy with a touch of raw, industrial charm. It's where old-school bodegas meet trendy art galleries and foodie hotspots.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> Head to the Meatpacking District (Kødbyen) for amazing food at places like <a href="https://www.warpigs.dk/" target="_blank" class="text-blue-500 hover:underline">Warpigs</a> (BBQ & beer), <a href="https://mother.dk/" target="_blank" class="text-blue-500 hover:underline">Mother</a> (sourdough pizza), or explore the many hip restaurants and bars. For brunch, <a href="https://madogkaffe.dk/" target="_blank" class="text-blue-500 hover:underline">Mad & Kaffe</a> is excellent. Grab coffee at <a href="https://prologcoffee.com/" target="_blank" class="text-blue-500 hover:underline">Prolog Coffee Bar</a>. Don't miss the communal dinner at <a href="https://absaloncph.dk/" target="_blank" class="text-blue-500 hover:underline">Absalon</a>.</p>
+                            <p><strong>See & Do:</strong> Explore art galleries in Kødbyen. Check out the redeveloped Carlsberg Byen for new architecture, cafes, and restaurants. For nightlife, Jolene Bar in Kødbyen is a popular spot for dancing.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/FC913A/white?text=Meatpacking+District+Vesterbro" alt="Meatpacking District Vesterbro" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+
+                <div id="norrebro-content" class="neighborhood-content">
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Nørrebro: Diverse, Youthful & Lively</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> A multicultural melting pot that's vibrant, creative, and always buzzing with energy. It's the definition of Copenhagen's youthful spirit.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> Jægersborggade is a must-visit street for local treats. Try gourmet porridge at <a href="https://groed.com/" target="_blank" class="text-blue-500 hover:underline">GRØD</a>, amazing pizza at <a href="https://www.baest.dk/" target="_blank" class="text-blue-500 hover:underline">Bæst</a>, or world-class coffee at <a href="https://coffeecollective.dk/" target="_blank" class="text-blue-500 hover:underline">Coffee Collective</a> (Sankt Hans Torv). Other great bakeries include Benji, Rondo, Mirabelle, and Andersen & Maillard. Explore international cuisine, including some of the city's best shawarma, ramen, and tacos. For a relaxed experience, Café Gavlen on Ravnsborggade is excellent for people-watching.</p>
+                            <p><strong>See & Do:</strong> Hang out like a local on Dronning Louises Bro, walk through the beautiful Assistens Cemetery (where H.C. Andersen is buried), and explore the colorful urban park, Superkilen. Fælledparken is a large and pleasant park. For kids, Trafiklegepladsen offers a simulated traffic environment for biking.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/F9D423/white?text=Superkilen+Park+Nørrebro" alt="Superkilen Park Nørrebro" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+
+                <div id="indreby-content" class="neighborhood-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Indre By: Historic, Busy & Grand</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> The classic, historical heart of the city. Full of grand architecture, charming cobblestone streets, shopping, and history at every turn.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> Explore the <a href="https://torvehallernekbh.dk/" target="_blank" class="text-blue-500 hover:underline">Torvehallerne</a> food market for countless options. For a cozy coffee, try <a href="https://www.atelierseptember.dk/" target="_blank" class="text-blue-500 hover:underline">Atelier September</a> or Apotek 57. For traditional Danish smørrebrød, <a href="https://toldogsnaps.dk/" target="_blank" class="text-blue-500 hover:underline">Told & Snaps</a> is authentic. <a href="https://gasolinegrill.com/" target="_blank" class="text-blue-500 hover:underline">Gasoline Grill</a> is popular for burgers. Avoid the tourist-trap restaurants in Nyhavn for dinner.</p>
+                            <p><strong>See & Do:</strong> Visit <a href="https://www.rosenborgslot.dk/" target="_blank" class="text-blue-500 hover:underline">Rosenborg Castle</a>, walk through <a href="https://www.kongenshave.dk/" target="_blank" class="text-blue-500 hover:underline">King's Garden</a>, go shopping on Strøget, and explore the many hidden side streets like Pilestræde. Climb <a href="https://rundetaarn.dk/" target="_blank" class="text-blue-500 hover:underline">The Round Tower</a> for panoramic views. Visit <a href="https://www.designmuseum.dk/" target="_blank" class="text-blue-500 hover:underline">Designmuseum Danmark</a>, the <a href="https://natmus.dk/" target="_blank" class="text-blue-500 hover:underline">National Museum of Denmark</a>, or <a href="https://www.glyptoteket.dk/" target="_blank" class="text-blue-500 hover:underline">Ny Carlsberg Glyptotek</a>. The courtyard garden of the Royal Library is a serene hidden gem.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/EDE574/black?text=Nyhavn+Canal" alt="Nyhavn Canal" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+                
+                <div id="osterbro-content" class="neighborhood-content">
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Østerbro: Posh, Calm & Family-Friendly</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> Elegant, spacious, and green. This is a more residential and relaxed part of the city, perfect for families and peaceful strolls.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> Enjoy the cozy atmosphere at <a href="https://www.cafe-bopa.dk/" target="_blank" class="text-blue-500 hover:underline">Café Bopa</a> or grab a healthy and delicious meal at <a href="https://www.soulscph.dk/" target="_blank" class="text-blue-500 hover:underline">Souls</a>. Emmerys is specifically recommended for its outstanding hindbærsnitter (raspberry shortbread).</p>
+                            <p><strong>See & Do:</strong> Go for a run or walk in <a href="https://www.kk.dk/faelledparken" target="_blank" class="text-blue-500 hover:underline">Fælledparken</a>, take a dip at <a href="https://www.kk.dk/svanemollen-strand" target="_blank" class="text-blue-500 hover:underline">Svanemøllen Strand</a>, or cycle up to the modern architecture of Nordhavn. The area around Svanemøllen Beach offers a unique combination of urban convenience and coastal charm. Look for the distinctive "soup terrine" building at Trianglen.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/E1F5C4/black?text=Fælledparken+Østerbro" alt="Fælledparken Østerbro" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+                
+                <div id="christianshavn-content" class="neighborhood-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Christianshavn: Maritime, Bohemian & Unique</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> A charming area with canals, houseboats, and a laid-back, bohemian atmosphere. It feels like a small village within the city.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> A must-visit is <a href="https://www.reffen.dk/" target="_blank" class="text-blue-500 hover:underline">Reffen</a> for street food with a view. <a href="https://www.labanchina.dk/" target="_blank" class="text-blue-500 hover:underline">La Banchina</a> is a hidden gem for coffee, wine, a sauna, and a swim. HANS Coffee is also a favored spot.</p>
+                            <p><strong>See & Do:</strong> Climb the tower of <a href="https://www.vorfrelserskirke.dk/" target="_blank" class="text-blue-500 hover:underline">Church of Our Saviour</a> for an amazing view, rent a <a href="https://goboat.dk/" target="_blank" class="text-blue-500 hover:underline">GoBoat</a> to cruise the canals, or explore the unique <a href="https://www.christiania.org/" target="_blank" class="text-blue-500 hover:underline">Freetown Christiania</a> (be mindful of photography restrictions). Walk along the Christianshavn Ramparts for historical significance and natural beauty. Explore Holmen, a former military area now open for public walking.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/FF4E50/white?text=Christianshavn+Canal" alt="Christianshavn Canal" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+                
+                <div id="amager-content" class="neighborhood-content">
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Amager & Islands Brygge: Waterfront, Modern & Natural</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> A mix of modern architecture, local city life, and expansive nature. It's all about being close to the water.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> Enjoy the famous brunch board at <a href="https://www.wulffogkonstali.dk/" target="_blank" class="text-blue-500 hover:underline">Wulff & Konstali</a>. Grab a coffee at the Islands Brygge branch of <a href="https://coffeecollective.dk/" target="_blank" class="text-blue-500 hover:underline">Coffee Collective</a>.</p>
+                            <p><strong>See & Do:</strong> Go for a swim at <a href="https://www.kk.dk/havnebadet-islands-brygge" target="_blank" class="text-blue-500 hover:underline">Islands Brygge Harbour Bath</a>, explore the wild nature of <a href="https://naturstyrelsen.dk/naturoplevelser/naturguider/amager-faelled/" target="_blank" class="text-blue-500 hover:underline">Amager Fælled</a>, or cycle along the vast <a href="https://www.kk.dk/amager-strandpark" target="_blank" class="text-blue-500 hover:underline">Amager Strandpark</a>. Check out <a href="https://www.kk.dk/kastrup-soebad" target="_blank" class="text-blue-500 hover:underline">Kastrup Søbad</a>, an architecturally distinctive, snail-shaped bathing facility. Discover Sydhavnstippen, a lesser-known natural area with a small beach and home to sheep and occasionally alpacas.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/FC913A/white?text=Islands+Brygge+Harbour+Bath" alt="Islands Brygge Harbour Bath" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+
+                <div id="nordhavn-content" class="neighborhood-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Nordhavn: Modern Architecture & Seaside Living</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> A rapidly regenerating area showcasing impressive, contemporary architecture and vibrant seaside living.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> Andersen & Maillard is recommended for its excellent pastries, while John & Woo is a popular choice for brunch. The Sandkaj area offers a wide selection of cafes, pizzerias, ice cream shops, sushi bars, and wine bars.</p>
+                            <p><strong>See & Do:</strong> Nordhavn is a prime example of modern urban development. <a href="https://www.kk.dk/sandkaj-havnebad" target="_blank" class="text-blue-500 hover:underline">Sandkaj Harbour Bath</a> is a popular swimming spot with clear water and terraced wooden docks ideal for sunbathing and cold plunging. Enjoy waterfront living and explore the unique contemporary architecture.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/F9D423/white?text=Nordhavn+Architecture" alt="Nordhavn Architecture" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+
+                <div id="frederiksberg-content" class="neighborhood-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Frederiksberg: Sophisticated Green Oasis</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> Elegant, green, and appealing, with wide, tree-lined boulevards, lush gardens, and a calmer ambiance. Often associated with a middle-to-upper-class demographic.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> The neighborhood is home to various gourmet spots and sidewalk cafes. Forno a Legna is noted as an excellent pizza establishment.</p>
+                            <p><strong>See & Do:</strong> Explore <a href="https://www.frederiksbergmuseerne.dk/en/frederiksberg-gardens" target="_blank" class="text-blue-500 hover:underline">Frederiksberg Gardens</a>, a beautiful Baroque-inspired recreational area, ideal for peaceful strolls. Visit the Chinese Summerhouse and the Apis Temple within the gardens. See <a href="https://www.frederiksbergmuseerne.dk/en/frederiksberg-palace" target="_blank" class="text-blue-500 hover:underline">Frederiksberg Palace</a>, a Baroque residence overlooking the gardens. Explore Søndermarken, another large park adjacent to Frederiksberg Gardens. Admire the grand bungalows and villas, and the Danish modernist architecture of the Town Hall and Radiohuset.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/EDE574/black?text=Frederiksberg+Gardens" alt="Frederiksberg Gardens" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+
+                <div id="nordvest-content" class="neighborhood-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-3 text-[#FF4E50]">Nordvest: Raw, Authentic & Up-and-Coming</h3>
+                            <p class="mb-4"><strong>Vibe:</strong> A culturally diverse neighborhood off the beaten track, offering an authentic and distinctly local experience with an industrial and raw aesthetic, interspersed with green areas.</p>
+                            <p class="mb-2"><strong>Eat & Drink:</strong> Explore a wide selection of Arabic grocery stores and sidewalk shawarma joints. <a href="https://behov.dk/" target="_blank" class="text-blue-500 hover:underline">Behov Pizza</a> is considered one of Copenhagen's finest. Tribeca NV is a notable establishment for pizza, dining, and drinks. Tekno Eatery focuses on sustainability and organic food. For coffee and baked goods, <a href="https://flerefugle.dk/" target="_blank" class="text-blue-500 hover:underline">Flere Fugle</a> is a bakery in an old garage. Kaffedepartementet offers a cool yet welcoming atmosphere. Dorthea's Bar on Utterslev Torv is a welcoming establishment for all.</p>
+                            <p><strong>See & Do:</strong> Visit <a href="https://www.grundtvigskirke.dk/" target="_blank" class="text-blue-500 hover:underline">Grundtvig's Church</a>, a monumental architectural masterpiece. See the modern social housing designed by BIG on Dortheavej. Explore Degnestavnen's Playground for world-class street art. Discover the urban hops farm Byhumle and the Flying Couch brewery. The Studio Houses, designed for creative artists, and Sjakket, a former industrial building for vulnerable children, are also unique spots. Enjoy walks in Grønningen-Bispeparken, Bispebjerg Cemetery, Ryvangen Memorial Park, and Lersøparken.</p>
+                        </div>
+                        <img src="https://placehold.co/600x400/E1F5C4/black?text=Grundtvig's+Church" alt="Grundtvig's Church" class="rounded-lg shadow-md w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-white rounded-lg shadow-xl p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-center mb-4">Neighborhood Vibe at a Glance</h3>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">This chart compares the dominant characteristics of key neighborhoods. It's a quick way to see which area best fits the experience you're looking for, whether it's creative energy, family-friendly calm, or historical grandeur.</p>
+                <div class="chart-container">
+                    <canvas id="neighborhoodVibeChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="activities" class="mb-16 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-12">Local-Approved Activities: Swims, Strolls & Sports</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center">🏊‍♀️ Best Bathing Spots</h3>
+                    <p class="text-center text-gray-600 mb-6">Copenhagen's harbor is clean enough to swim in, and locals take full advantage. Here are some top spots to take a dip, each with its own vibe.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">🥇</span>
+                            <div><strong>Amager Strandpark:</strong> A huge, sandy beach perfect for a full day of sun, sports, and swimming. Great for families and active people.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">🥈</span>
+                            <div><strong>Islands Brygge Havnebad:</strong> The classic city harbor bath. Always buzzing with people, music, and a lively atmosphere in the summer.</div>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-xl mr-4">🥉</span>
+                            <div><strong>La Banchina:</strong> A small, intimate spot with a sauna. Perfect for a quick dip followed by a glass of wine. A true hidden gem.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">⭐</span>
+                            <div><strong>Svanemøllen Strand:</strong> A calmer, family-friendly beach in Østerbro with a long pier for jumping off.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">⭐</span>
+                            <div><strong>Kastrup Sea Bath (Sneglen):</strong> A distinctive "snail-shaped" wooden pier offering 360° views and diving boards.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">⭐</span>
+                            <div><strong>Bellevue Beach:</strong> A chic, sandy beach with Bauhaus-style watchtowers by Arne Jacobsen, located north of Copenhagen.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">⭐</span>
+                            <div><strong>Sluseholmen Harbour Bath:</strong> A quiet, modern, lagoon-like area with four pools in Sydhavnen.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">⭐</span>
+                            <div><strong>Kalvebod Bølge:</strong> An urban promenade featuring baths for both children and adults, and diving towers.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">⭐</span>
+                            <div><strong>Sandkaj Harbour Bath:</strong> A hip, urban spot in Nordhavn with clear water and terraced wooden docks, popular for cold plunging.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">⭐</span>
+                            <div><strong>Ofelia Plads:</strong> A central, lively wooden deck near Nyhavn, great for quick dips and enjoying views of Amalienborg and the Operaen.</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center">🚶‍♀️ Great Nature Walks & Parks</h3>
+                     <p class="text-center text-gray-600 mb-6">Escaping into nature is easy here. These parks and trails are perfect for a relaxing walk, a scenic run, or a bike ride.</p>
+                    <ul class="space-y-4">
+                       <li class="flex items-start">
+                            <span class="text-xl mr-4">🌳</span>
+                            <div><strong>Amager Fælled:</strong> A vast, wild nature reserve right next to the city. It feels like you've completely left the urban bustle behind.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">👑</span>
+                            <div><strong>Frederiksberg Have & Søndermarken:</strong> Two beautiful, connected parks with canals, old trees, and a palace. Perfect for a romantic and peaceful stroll.</div>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-xl mr-4"> lakeside</span>
+                            <div><strong>The Lakes (Søerne):</strong> The 6km path around the three central lakes is a classic route for walking, jogging, and people-watching.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">💀</span>
+                            <div><strong>Assistens Cemetery:</strong> More of a beautiful park than a somber graveyard. Locals picnic and relax among the graves of famous Danes.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">⚓</span>
+                            <div><strong>Havneringen Walk:</strong> A 13 km route covering the inner harbor, showcasing interesting architecture and canal views.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">🏰</span>
+                            <div><strong>Kastellet:</strong> A star-shaped 17th-century citadel with a moat, windmills, and military history, perfect for an hour's walk.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">🌿</span>
+                            <div><strong>Christianshavn Ramparts:</strong> Historic fortifications bordering Freetown Christiania, offering views of canals and colorful townhouses.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">🌸</span>
+                            <div><strong>Botanical Garden & Østre Anlæg:</strong> Features exotic plants, a Palm House, lakes, and sculptures for a serene walk.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">🦌</span>
+                            <div><strong>Dyrehaven (Royal Deer Garden):</strong> A UNESCO-listed natural park where deer roam freely among ancient oaks, home to the Hermitage Palace.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">🏡</span>
+                            <div><strong>Kongens Have to Nyboder:</strong> A walk encompassing the King's Garden, Rosenborg Castle, and the iconic yellow houses of Nyboder.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-4">💧</span>
+                            <div><strong>Grønningen-Bispeparken:</strong> A new climate park in Nordvest with bioswales, 'social swales', playful art installations, and native plants.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+             <div class="mt-12 bg-white rounded-lg shadow-xl p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-center mb-4">Popular Local Pastimes</h3>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">Beyond sightseeing, Copenhageners love their active and social hobbies. This chart shows a fun ranking of popular activities, from the trendy "sauna-gus" to the social sport of Padel.</p>
+                <div class="chart-container h-[450px] md:h-[500px]">
+                    <canvas id="activityPopularityChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="classics" class="mb-16 section-fade-in">
+             <h2 class="text-3xl font-bold text-center mb-12">The Tourist Classics (With a Local Twist)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-3">Nyhavn & Canal Tour</h3>
+                    <p class="text-gray-600">The colorful harbor is a must-see. <br><strong>Local Tip:</strong> Go early in the morning to avoid crowds. Instead of the big tour boats, rent a <a href="https://goboat.dk/" target="_blank" class="text-blue-500 hover:underline">GoBoat</a> and be your own captain.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-3">Tivoli Gardens</h3>
+                    <p class="text-gray-600">A magical and historic amusement park. <br><strong>Local Tip:</strong> It's most enchanting at night when all the lights are on. It's worth visiting just for the atmosphere, even if you don't go on any rides. The Tivoli Food Hall is accessible even when the garden is closed.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-3">The Little Mermaid</h3>
+                    <p class="text-gray-600">The city's famous icon. <br><strong>Local Tip:</strong> She's smaller than you think! Combine a quick visit with a walk around the beautiful Kastellet fortress next door for a more fulfilling trip.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-3">Christiansborg Palace</h3>
+                    <p class="text-gray-600">Home of the Danish Parliament. <br><strong>Local Tip:</strong> The best part is free! Take the elevator up the tower (Tårnet) for one of the best panoramic views of Copenhagen. You can also explore the courtyard and a peaceful hidden garden.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-3">Amalienborg & The Marble Church</h3>
+                    <p class="text-gray-600">The Queen's residence and a stunning church. <br><strong>Local Tip:</strong> Time your visit for the changing of the guard at 12:00 PM for the full royal experience.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-3">Strøget Shopping Street</h3>
+                    <p class="text-gray-600">One of Europe's longest pedestrian streets. <br><strong>Local Tip:</strong> The real charm is in the side streets. Duck into alleys like Pilestræde or find Gråbrødretorv square for a quieter, more authentic vibe.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-3">Rosenborg Castle & King's Garden</h3>
+                    <p class="text-gray-600">This beautiful Renaissance castle houses the Danish crown jewels. <br><strong>Local Tip:</strong> On a sunny day, explore the castle and then enjoy a picnic in the King's Garden with snacks from a nearby grocery store for a budget-friendly royal experience.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
+                    <h3 class="text-xl font-bold mb-3">The Round Tower (Rundetårn)</h3>
+                    <p class="text-gray-600">A 17th-century observatory tower with panoramic city views. <br><strong>Local Tip:</strong> Offers a more comfortable ascent than the Church of Our Savior's spiral staircase, especially if you're not keen on heights or tight spaces. It's also open year-round.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="avoid" class="section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-12">How to Be a Local: What to Do & What to Avoid</h2>
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-green-600">Do This 👍</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-center"><span class="text-2xl mr-3">🚲</span> Rent a bike. It's the best and most authentic way to see the city.But be carefull and do not ride in rush hours</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">💧</span> Drink tap water. It's clean, safe, and free.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🗣️</span> Say "Tak" (thank you). Locals appreciate the effort.</li>
+                             <li class="flex items-center"><span class="text-2xl mr-3">🧺</span> Have a picnic in King's Garden or at the Lakes.</li>
+                                                          <li class="flex items-center"><span class="text-2xl mr-3">🧺</span> Walk around in the city is very safe at all time: but if you go alone avoid some places at nordvest and nørrebro in the evening</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">💳</span> Use a credit card. Copenhagen is a mostly cashless society.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🎟️</span> I am not sure about this but: Consider a Copenhagen Card for unlimited public transport and free entry to attractions.</li>
+                                                        <li class="flex items-center"><span class="text-2xl mr-3">🎟️</span> Take the metro or S-train..... The metro is awesome!</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🌧️</span> Be prepared for variable weather; a light rain jacket is always a good idea.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🐌</span> Try bageries, coffee and enjoy going out.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🕯️</span> Embrace "Hygge" – coziness, comfort, and well-being are central to Danish culture.</li>
+                        </ul>
+                    </div>
+                    <div class="border-t md:border-t-0 md:border-l border-gray-200 pt-8 md:pt-0 md:pl-8">
+                        <h3 class="text-2xl font-bold mb-4 text-red-500">Avoid This 👎</h3>
+                         <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-center"><span class="text-2xl mr-3">🚕</span> Taking taxis. They are extremely expensive. Use public transport or bikes instead.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🍽️</span> Eating dinner right in Nyhavn. It's overpriced for mediocre food.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🚶‍♂️</span> Walking in the bike lanes. It's a cardinal sin here!</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🎫</span> Riding public transport without a ticket. The fines are very high.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🥪</span> Picking up smørrebrød with your hands; always use a knife and fork.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🚦</span> Biking on sidewalks or turning right on a red light (it's illegal).</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">💰</span> Buying bottled water; tap water is excellent.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🚢</span> Not sure about this but: Taking large, packed canal tour boats; smaller group tours like Hey Captain offer a better experience.</li>
+                            <li class="flex items-center"><span class="text-2xl mr-3">🎒</span> Not sure about this I have never seen it: Being careless with valuables; pickpockets can be present in crowded tourist areas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-16 py-8">
+        <div class="container mx-auto text-center">
+            <p>Your Personal Guide to Copenhagen | Crafted with local love by Rasmus.</p>
+            <p class="text-sm text-gray-400 mt-2">Enjoy your stay and explore the wonderful city of Copenhagen!</p>
+        </div>
+    </footer>
+
+    <script>
+        const energeticPlayfulPalette = ['#FF4E50', '#FC913A', '#F9D423', '#EDE574', '#E1F5C4'];
+
+        function wrapLabel(str, maxWidth) {
+            if (typeof str !== 'string' || str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const sharedTooltipOptions = {
+             plugins: {
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: { size: 16 },
+                    bodyFont: { size: 14 },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const ctxVibe = document.getElementById('neighborhoodVibeChart').getContext('2d');
+        new Chart(ctxVibe, {
+            type: 'radar',
+            data: {
+                labels: ['Creative & Hip', 'Historic & Grand', 'Family Friendly', 'Diverse & Lively', 'Natural & Green'],
+                datasets: [{
+                    label: 'Nørrebro',
+                    data: [8, 3, 5, 9, 6],
+                    fill: true,
+                    backgroundColor: 'rgba(255, 78, 80, 0.2)',
+                    borderColor: '#FF4E50',
+                    pointBackgroundColor: '#FF4E50',
+                }, {
+                    label: 'Vesterbro',
+                    data: [9, 4, 6, 7, 3],
+                    fill: true,
+                    backgroundColor: 'rgba(252, 145, 58, 0.2)',
+                    borderColor: '#FC913A',
+                    pointBackgroundColor: '#FC913A',
+                }, {
+                    label: 'Østerbro',
+                    data: [4, 7, 9, 5, 8],
+                    fill: true,
+                    backgroundColor: 'rgba(249, 212, 35, 0.2)',
+                    borderColor: '#F9D423',
+                    pointBackgroundColor: '#F9D423',
+                }, {
+                    label: 'Indre By',
+                    data: [5, 9, 4, 6, 7],
+                    fill: true,
+                    backgroundColor: 'rgba(237, 229, 116, 0.2)',
+                    borderColor: '#EDE574',
+                    pointBackgroundColor: '#EDE574',
+                }, {
+                    label: 'Christianshavn',
+                    data: [7, 6, 5, 7, 8],
+                    fill: true,
+                    backgroundColor: 'rgba(225, 245, 196, 0.2)',
+                    borderColor: '#E1F5C4',
+                    pointBackgroundColor: '#E1F5C4',
+                }, {
+                    label: 'Amager',
+                    data: [6, 4, 7, 6, 9],
+                    fill: true,
+                    backgroundColor: 'rgba(128, 128, 128, 0.2)',
+                    borderColor: '#808080',
+                    pointBackgroundColor: '#808080',
+                }, {
+                    label: 'Nordhavn',
+                    data: [7, 5, 6, 6, 8],
+                    fill: true,
+                    backgroundColor: 'rgba(0, 128, 128, 0.2)',
+                    borderColor: '#008080',
+                    pointBackgroundColor: '#008080',
+                }, {
+                    label: 'Frederiksberg',
+                    data: [4, 7, 8, 5, 9],
+                    fill: true,
+                    backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                    borderColor: '#FFA500',
+                    pointBackgroundColor: '#FFA500',
+                }, {
+                    label: 'Nordvest',
+                    data: [7, 3, 6, 8, 7],
+                    fill: true,
+                    backgroundColor: 'rgba(100, 149, 237, 0.2)',
+                    borderColor: '#6495ED',
+                    pointBackgroundColor: '#6495ED',
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                ...sharedTooltipOptions,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                        pointLabels: { font: { size: 12 } },
+                        ticks: {
+                            backdropColor: 'transparent',
+                            stepSize: 2
+                        }
+                    }
+                },
+                plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        const ctxActivity = document.getElementById('activityPopularityChart').getContext('2d');
+        new Chart(ctxActivity, {
+            type: 'bar',
+            data: {
+                labels: ['Harbor Swimming & Sunbathing', 'Sauna-gus (Sauna + Dip)', 'Cycling Everywhere', 'Padel Tennis', 'Picnicking in Parks', 'Exploring Street Food Markets'],
+                datasets: [{
+                    label: 'Local Popularity Score',
+                    data: [9, 7, 10, 6, 8, 9],
+                    backgroundColor: [
+                        'rgba(255, 78, 80, 0.7)',
+                        'rgba(252, 145, 58, 0.7)',
+                        'rgba(249, 212, 35, 0.7)',
+                        'rgba(237, 229, 116, 0.7)',
+                        'rgba(225, 245, 196, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
+                    borderColor: [
+                         '#FF4E50',
+                        '#FC913A',
+                        '#F9D423',
+                        '#EDE574',
+                        '#E1F5C4',
+                        '#FF6384'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                 ...sharedTooltipOptions,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { display: false }
+                    },
+                    y: {
+                       grid: { display: false }
+                    }
+                },
+                plugins: {
+                     ...sharedTooltipOptions.plugins,
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        function showNeighborhood(id) {
+            const contents = document.querySelectorAll('.neighborhood-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            const buttons = document.querySelectorAll('.neighborhood-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(id + '-content').classList.add('active');
+            document.querySelector(`button[onclick="showNeighborhood('${id}')"]`).classList.add('active');
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.section-fade-in').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Initialize with Vesterbro content active
+        document.addEventListener('DOMContentLoaded', () => {
+            showNeighborhood('vesterbro');
+        });
+
+    </script>
+</body>
+</html>
